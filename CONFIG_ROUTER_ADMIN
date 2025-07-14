@@ -1,0 +1,36 @@
+ROUTER SOPORTE TI
+
+Router>enable
+Router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#interface fa0/0
+Router(config-if)#ip address 192.168.2.1 255.255.255.0
+Router(config-if)#no shutdown
+Router(config-if)#exit
+Router(config)#interface fa0/1
+Router(config-if)#ip address 10.10.1.2 255.255.255.0
+Router(config-if)#no shutdown
+Router(config-if)#exit
+Router(config)#interface fa1/0
+Router(config-if)#ip address 10.10.3.1 255.255.255.0
+Router(config-if)#no shutdown 
+Router(config-if)#exit
+
+BGP
+Router(config)#router bgp 65020
+Router(config-router)#neighbor 10.10.1.1 remote-as 65010
+Router(config-router)#%BGP-5-ADJCHANGE: neighbor 10.10.1.1 Up
+Router(config-router)#neighbor 10.10.3.2 remote-as 65030
+Router(config-router)#network 192.168.2.0 mask 255.255.255.0
+Router(config-router)#exit
+Router(config)#
+
+LOOPBACK
+Router(config)#interface loopback0
+Router(config-if)#
+Router(config-if)#ip address 20.0.0.2 255.255.255.255
+Router(config-if)#exit
+Router(config)#router bgp 65020
+Router(config-router)#bgp router-id 20.0.0.2
+Router(config-router)#network 20.0.0.2 mask 255.255.255.255
+Router(config-router)#exit
